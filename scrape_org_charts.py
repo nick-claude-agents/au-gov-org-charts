@@ -40,6 +40,9 @@ XML_URL = "https://www.directory.gov.au/sites/default/files/export.xml"
 XML_PATH = HERE / "directory_export.xml"
 OUT_DIR = HERE / "org_charts"
 INDEX_HTML = HERE / "index.html"
+# The dashboard's AGENCIES list lives in the corporate-plans repo, not here, so
+# fetch it from the live site to keep org-chart matches in sync with it.
+DASHBOARD_URL = "https://nick-claude-agents.github.io/au-gov-corporate-plans/index.html"
 UA = "Mozilla/5.0 (org-chart-scraper; Parbery BD tooling)"
 
 ROLE_TYPES = {"directory_role", "single_executive_role", "role", "portfolio_role"}
@@ -91,14 +94,29 @@ def name_candidates(name):
     return {c for c in cands if len(c) >= 4}
 
 
-def load_dashboard_agencies():
-    if not INDEX_HTML.exists():
-        return []
-    html = INDEX_HTML.read_text(encoding="utf-8")
-    block = re.search(r"const AGENCIES\s*=\s*\[(.*?)\];", html, re.S)
-    scope = block.group(1) if block else html
+def _parse_agencies(html_text):
+    block = re.search(r"const AGENCIES\s*=\s*\[(.*?)\];", html_text, re.S)
+    scope = block.group(1) if block else ""      # viewer index.html has no AGENCIES
     names = re.findall(r'name:\s*"((?:[^"\\]|\\.)*)"', scope)
     return [n.replace('\\"', '"') for n in names]
+
+
+def load_dashboard_agencies():
+    """Agency names from the live corporate-plans dashboard, so org-chart
+    matches track it. Falls back to a local index.html if the fetch fails."""
+    try:
+        req = urllib.request.Request(DASHBOARD_URL, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            names = _parse_agencies(r.read().decode("utf-8", "replace"))
+        if names:
+            log(f"Dashboard agencies fetched from live site: {len(names)}")
+            return names
+        log("Live dashboard had no AGENCIES list; falling back to local index.html")
+    except Exception as e:
+        log(f"Could not fetch live dashboard ({e}); trying local index.html")
+    if INDEX_HTML.exists():
+        return _parse_agencies(INDEX_HTML.read_text(encoding="utf-8"))
+    return []
 
 
 def match_to_dashboard(orgs, agencies):

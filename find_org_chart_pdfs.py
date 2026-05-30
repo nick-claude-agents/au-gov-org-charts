@@ -224,6 +224,10 @@ def main():
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--refresh", action="store_true",
                     help="re-attempt agencies already downloaded")
+    ap.add_argument("--overrides-only", action="store_true",
+                    help="only (re)download agencies that have a pdf_overrides "
+                         "entry; crawler-found PDFs are kept as-is. Used by the "
+                         "weekly job so a flaky cloud re-crawl can't drop them.")
     args = ap.parse_args()
 
     agencies = load_agencies()
@@ -231,6 +235,9 @@ def main():
     for a in agencies:
         if a["slug"] in overrides:
             a["override"] = overrides[a["slug"]]
+    if args.overrides_only:
+        agencies = [a for a in agencies if a.get("override")]
+        args.refresh = True          # always re-fetch the curated PDFs
     if args.only:
         q = args.only.lower()
         agencies = [a for a in agencies if q in a["title"].lower() or q in a["slug"]]

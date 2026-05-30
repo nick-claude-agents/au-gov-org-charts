@@ -1,0 +1,52 @@
+name: Weekly org-chart update
+
+# Runs Saturday morning in Canberra. GitHub cron is UTC; Fri 21:00 UTC =
+# Sat 07:00 AEST (UTC+10) / Sat 08:00 AEDT (UTC+11) — morning either way.
+on:
+  schedule:
+    - cron: "0 21 * * 5"
+  workflow_dispatch: {}        # allow manual runs from the Actions tab
+
+permissions:
+  contents: write              # so the job can commit & push the refreshed data
+
+concurrency:
+  group: weekly-org-chart-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      # Rebuild the structured charts (divisions/branches + SES people) from the
+      # directory.gov.au export. Agency->dashboard matching is fetched live.
+      - name: Rebuild structured charts from directory.gov.au
+        run: python scrape_org_charts.py --refresh
+
+      # Re-download the curated published-PDF org charts (the major departments).
+      # Crawler-found PDFs are preserved as-is so a flaky cloud re-crawl can't
+      # silently drop them.
+      - name: Refresh published org-chart PDFs
+        run: python find_org_chart_pdfs.py --overrides-only --workers 8
+
+      # Commit only the generated data (not the ~19 MB directory_export.xml cache).
+      - name: Commit and push if data changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add org_charts
+          if git diff --cached --quiet; then
+            echo "No changes this week."
+          else
+            git commit -m "Weekly org-chart update ($(date -u +%Y-%m-%d))"
+            git push
+          fi
