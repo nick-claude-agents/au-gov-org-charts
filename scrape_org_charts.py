@@ -56,13 +56,19 @@ def log(*a):
 def download_xml(timeout=300, attempts=4):
     """Download the ~19 MB register export. It can stream slowly from cloud
     runners, so use a generous socket timeout and retry on failure."""
+    import gzip
     log(f"Downloading {XML_URL} ...")
-    req = urllib.request.Request(XML_URL, headers={"User-Agent": UA})
+    # Ask for gzip: the ~19 MB XML compresses ~10x, which avoids slow/stalled
+    # transfers (the file is served uncompressed otherwise).
+    req = urllib.request.Request(
+        XML_URL, headers={"User-Agent": UA, "Accept-Encoding": "gzip"})
     last = None
     for i in range(1, attempts + 1):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 data = r.read()
+                if r.headers.get("Content-Encoding") == "gzip":
+                    data = gzip.decompress(data)
             XML_PATH.write_bytes(data)
             log(f"Saved {len(data):,} bytes -> {XML_PATH.name}")
             return
