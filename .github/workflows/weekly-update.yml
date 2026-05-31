@@ -32,11 +32,26 @@ jobs:
       # speed-limit flags ride out a slow or briefly-stalled server.
       - name: Download directory.gov.au register
         run: |
-          curl --compressed --fail --retry 5 --retry-delay 15 --retry-all-errors \
-               --connect-timeout 30 --max-time 600 --speed-time 60 --speed-limit 2000 \
-               -A "Mozilla/5.0 (org-chart-scraper; Parbery BD tooling)" \
-               -o directory_export.xml \
-               "https://www.directory.gov.au/sites/default/files/export.xml"
+          # directory.gov.au's server drops HTTP/2 streams from cloud IPs
+          # (curl error 92: INTERNAL_ERROR). Force HTTP/1.1, allow a long slow
+          # transfer, and retry. Accept only a non-empty file that looks like XML.
+          ok=0
+          for attempt in 1 2 3 4 5; do
+            echo "Attempt $attempt..."
+            curl --http1.1 --compressed --fail --location \
+                 --connect-timeout 30 --max-time 1500 --retry 2 \
+                 -A "Mozilla/5.0 (org-chart-scraper; Parbery BD tooling)" \
+                 -o directory_export.xml \
+                 "https://www.directory.gov.au/sites/default/files/export.xml" && \
+              [ -s directory_export.xml ] && \
+              head -c 300 directory_export.xml | grep -qi "<" && { ok=1; break; }
+            echo "Attempt $attempt failed; waiting 30s..."
+            sleep 30
+          done
+          if [ "$ok" != "1" ]; then
+            echo "::error::Could not download directory.gov.au register after retries."
+            exit 1
+          fi
           ls -la directory_export.xml
 
       # Rebuild the structured charts (divisions/branches + SES people). No
