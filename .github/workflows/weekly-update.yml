@@ -1,10 +1,10 @@
 name: Weekly org-chart update
 
-# Runs Saturday morning in Canberra. GitHub cron is UTC; Fri 21:00 UTC =
-# Sat 07:00 AEST (UTC+10) / Sat 08:00 AEDT (UTC+11) — morning either way.
+# Runs Saturday 3:00 AM in Canberra. GitHub cron is UTC; Fri 17:00 UTC =
+# Sat 03:00 AEST (UTC+10) / Sat 04:00 AEDT (UTC+11).
 on:
   schedule:
-    - cron: "0 21 * * 5"
+    - cron: "0 17 * * 5"
   workflow_dispatch: {}        # allow manual runs from the Actions tab
 
 permissions:
