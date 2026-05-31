@@ -265,6 +265,13 @@ def main():
     else:
         prev = {}
     for r in results:
+        old = prev.get(r["slug"])
+        # Don't downgrade a working chart on a transient/stale-URL failure: if we
+        # had a good PDF and still have the file, keep it (e.g. a dated override
+        # URL that 404s once the agency publishes a newer file).
+        if (r["status"] != "downloaded" and old and old.get("status") == "downloaded"
+                and (PDF_DIR / f"{r['slug']}.pdf").exists()):
+            continue
         prev[r["slug"]] = r
     merged = sorted(prev.values(), key=lambda x: x["title"].lower())
     got = sum(1 for r in merged if r["status"] == "downloaded")
