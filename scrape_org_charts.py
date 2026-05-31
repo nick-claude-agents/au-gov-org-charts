@@ -30,6 +30,7 @@ import html
 import json
 import re
 import sys
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from collections import defaultdict
@@ -52,13 +53,24 @@ def log(*a):
     print(*a, file=sys.stderr, flush=True)
 
 
-def download_xml():
+def download_xml(timeout=300, attempts=4):
+    """Download the ~19 MB register export. It can stream slowly from cloud
+    runners, so use a generous socket timeout and retry on failure."""
     log(f"Downloading {XML_URL} ...")
     req = urllib.request.Request(XML_URL, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=120) as r:
-        data = r.read()
-    XML_PATH.write_bytes(data)
-    log(f"Saved {len(data):,} bytes -> {XML_PATH.name}")
+    last = None
+    for i in range(1, attempts + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                data = r.read()
+            XML_PATH.write_bytes(data)
+            log(f"Saved {len(data):,} bytes -> {XML_PATH.name}")
+            return
+        except Exception as e:                       # noqa: BLE001 (retry any)
+            last = e
+            log(f"  download attempt {i}/{attempts} failed: {e}")
+            time.sleep(10)
+    raise last
 
 
 def text(item, field, default=""):
