@@ -1,0 +1,63 @@
+name: Weekly org chart rebuild
+
+# Rebuilds the org charts from directory.gov.au every Saturday.
+# Re-downloads the register, regenerates every agency chart + index, refreshes
+# published PDFs, updates the viewer, and publishes to GitHub Pages.
+
+on:
+  schedule:
+    - cron: '0 20 * * 5'    # Fri 20:00 UTC = Sat 6:00 AM AEST
+  workflow_dispatch:          # allow manual trigger from the Actions tab
+
+permissions:
+  contents: write
+
+concurrency:
+  group: org-charts-rebuild
+  cancel-in-progress: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Rebuild charts from directory.gov.au
+        run: python scrape_org_charts.py --refresh
+
+      - name: Refresh published org-chart PDFs
+        run: python find_org_chart_pdfs.py
+
+      - name: Update Pages landing page (copy of viewer)
+        run: cp org_charts.html index.html
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add directory_export.xml org_charts org_charts.html index.html
+          if git diff --staged --quiet; then
+            echo "No changes this week."
+            exit 0
+          fi
+          git commit -m "Weekly org chart rebuild $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do
+            if git pull --rebase origin main && git push origin main; then
+              echo "Pushed."
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((RANDOM % 8 + 3))
+          done
+          echo "Push failed after retries."
+          exit 1
