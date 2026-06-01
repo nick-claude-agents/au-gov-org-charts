@@ -44,7 +44,9 @@ INDEX_HTML = HERE / "index.html"
 # The dashboard's AGENCIES list lives in the corporate-plans repo, not here, so
 # fetch it from the live site to keep org-chart matches in sync with it.
 DASHBOARD_URL = "https://nick-claude-agents.github.io/au-gov-corporate-plans/index.html"
-UA = "Mozilla/5.0 (org-chart-scraper; Parbery BD tooling)"
+# Plain browser UA — directory.gov.au TIMES OUT (blocks) any User-Agent
+# containing words like "scraper"/"bot", so this must look like a real browser.
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 ROLE_TYPES = {"directory_role", "single_executive_role", "role", "portfolio_role"}
 

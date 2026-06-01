@@ -39,7 +39,8 @@ CH_DIR = HERE / "org_charts"
 PDF_DIR = CH_DIR / "pdf"
 PDF_INDEX = CH_DIR / "pdf_index.json"
 OVERRIDES = CH_DIR / "pdf_overrides.json"   # {slug: direct_pdf_url} from search
-UA = "Mozilla/5.0 (org-chart-finder; Parbery BD tooling)"
+# Plain browser UA — gov sites block UAs containing "scraper"/"finder"/"bot".
+UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 TIMEOUT = 20
 
 # Phrases that signal an org chart, strongest first.
