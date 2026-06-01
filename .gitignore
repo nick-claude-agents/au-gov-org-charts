@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# Local weekly-rebuild runner artifacts (this PC only)
+run_weekly_rebuild.bat
+run_weekly_rebuild.log
