@@ -115,8 +115,8 @@
       "acronym": "",
       "portfolio": "Health, Disability and Ageing",
       "people_count": 12,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Australian Centre for Disease Control"
     },
     {
       "slug": "australian-centre-for-international-agricultural-research",
@@ -349,8 +349,8 @@
       "acronym": "",
       "portfolio": "Education",
       "people_count": 1,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Australian National University"
     },
     {
       "slug": "australian-naval-infrastructure-pty-ltd-statement-of-corporate-intent",
@@ -367,8 +367,8 @@
       "acronym": "",
       "portfolio": "Defence",
       "people_count": 0,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Australian Naval Nuclear Power Safety Regulator"
     },
     {
       "slug": "australian-nuclear-science-and-technology-organisation",
@@ -475,8 +475,8 @@
       "acronym": "",
       "portfolio": "Foreign Affairs and Trade",
       "people_count": 1,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Australian Secret Intelligence Service"
     },
     {
       "slug": "australian-securities-and-investments-commission",
@@ -727,8 +727,8 @@
       "acronym": "CRDC",
       "portfolio": "Agriculture, Fisheries and Forestry",
       "people_count": 4,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Cotton Research and Development Corporation"
     },
     {
       "slug": "creative-australia",
@@ -745,8 +745,8 @@
       "acronym": "",
       "portfolio": "Defence",
       "people_count": 4,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Defence and Veterans? Services Commission"
     },
     {
       "slug": "defence-housing-australia",
@@ -754,8 +754,8 @@
       "acronym": "DHA",
       "portfolio": "Defence",
       "people_count": 1,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Defence Housing Australia"
     },
     {
       "slug": "department-of-agriculture-fisheries-and-forestry",
@@ -853,8 +853,8 @@
       "acronym": "",
       "portfolio": "Infrastructure, Transport, Regional Development, Communications, Sport & Arts",
       "people_count": 126,
-      "in_dashboard": true,
-      "dashboard_name": "Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts"
+      "in_dashboard": false,
+      "dashboard_name": null
     },
     {
       "slug": "department-of-parliamentary-services",
@@ -979,8 +979,8 @@
       "acronym": "FRDC",
       "portfolio": "Agriculture, Fisheries and Forestry",
       "people_count": 6,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Fisheries Research and Development Corporation"
     },
     {
       "slug": "food-standards-australia-new-zealand",
@@ -1015,8 +1015,8 @@
       "acronym": "GRDC",
       "portfolio": "Agriculture, Fisheries and Forestry",
       "people_count": 8,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Grains Research and Development Corporation"
     },
     {
       "slug": "great-barrier-reef-marine-park-authority",
@@ -1357,8 +1357,8 @@
       "acronym": "",
       "portfolio": "Prime Minister and Cabinet",
       "people_count": 2,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Northern Territory Aboriginal Investment Corporation"
     },
     {
       "slug": "office-of-national-intelligence",
@@ -1366,8 +1366,8 @@
       "acronym": "ONI",
       "portfolio": "Prime Minister and Cabinet",
       "people_count": 0,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Office of National Intelligence"
     },
     {
       "slug": "office-of-parliamentary-counsel",
@@ -1564,8 +1564,8 @@
       "acronym": "RAAFVRT",
       "portfolio": "Defence",
       "people_count": 5,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Royal Australian Air Force Veterans' Residences Trust Fund"
     },
     {
       "slug": "royal-australian-air-force-welfare-trust-fund",
@@ -1609,8 +1609,8 @@
       "acronym": "RIRDC",
       "portfolio": "Agriculture, Fisheries and Forestry",
       "people_count": 7,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Rural Industries Research and Development Corporation (trading as AgriFutures Australia)"
     },
     {
       "slug": "safe-work-australia",
@@ -1726,8 +1726,8 @@
       "acronym": "",
       "portfolio": "Agriculture, Fisheries and Forestry",
       "people_count": 9,
-      "in_dashboard": false,
-      "dashboard_name": null
+      "in_dashboard": true,
+      "dashboard_name": "Wine Australia"
     },
     {
       "slug": "workplace-gender-equality-agency",

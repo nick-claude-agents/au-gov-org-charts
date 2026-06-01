@@ -5,7 +5,7 @@
   "portfolio": "Infrastructure, Transport, Regional Development, Communications, Sport & Arts",
   "website": "https://www.infrastructure.gov.au",
   "description": "Our work connects and enriches every Australian community, underpins our economy and society, and empowers our regions. We provide policy advice and deliver programs, projects and services in the infrastructure, transport, regional development, communications, sports and arts sectors, supporting our regions, cities and territories.",
-  "dashboard_name": "Department of Infrastructure, Transport, Regional Development, Communications, Sport and the Arts",
+  "dashboard_name": null,
   "people_count": 126,
   "tree": {
     "content_id": "199",
