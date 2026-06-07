@@ -40,7 +40,7 @@ jobs:
             echo "Attempt $attempt..."
             curl --http1.1 --compressed --fail --location \
                  --connect-timeout 30 --max-time 1500 --retry 2 \
-                 -A "Mozilla/5.0 (org-chart-scraper; Parbery BD tooling)" \
+                 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" \
                  -o directory_export.xml \
                  "https://www.directory.gov.au/sites/default/files/export.xml" && \
               [ -s directory_export.xml ] && \
